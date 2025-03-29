@@ -1,10 +1,13 @@
-class Cat {
-  mjau() {
-    print "MJAAUUU";
+class Thing {
+  getCallback() {
+    fun localFunction() {
+      print this.hei;
+    }
+
+    return localFunction;
   }
 }
-var cat = Cat();
-cat.age = 10;
-print cat;
-print cat.age;
-cat.mjau();
+var ting = Thing();
+ting.hei = "Hei på meg";
+var callback = ting.getCallback();
+callback();

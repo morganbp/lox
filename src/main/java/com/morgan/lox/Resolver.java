@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import com.sun.tools.javac.util.Log;
+
 public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     private final Interpreter interpreter;
     private final Stack<Map<String, Boolean>> scopes = new Stack<>();
@@ -85,12 +87,19 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     
     @Override
     public Void visitClassStmt(Stmt.Class stmt) {
+        ClassType enclosingType = currentClass;
+        currentClass = ClassType.CLASS;
         declare(stmt.name);
         define(stmt.name);
+
+        beginScope();
+        scopes.peek().put("this", true);
         for (Stmt.Function method : stmt.methods) {
             FunctionType declaration = FunctionType.METHOD;
             resolveFunction(method, declaration);
         }
+        endScope();
+        currentClass = enclosingType;
         return null;
     }
 
@@ -226,6 +235,16 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitThisExpr(Expr.This expr) {
+        if(currentClass == ClassType.NONE) {
+            Lox.error(expr.keyword, "Can't use 'this' outside of class.");
+            return null;
+        }
+        resolveLocal(expr, expr.keyword);
+        return null;
+    }
+
+    @Override
     public Void visitUnaryExpr(Expr.Unary expr) {
         resolve(expr.right);
         return null;
@@ -242,5 +261,12 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         FUNCTION,
         METHOD
     }
+
+    private enum ClassType {
+        NONE,
+        CLASS
+    }
+
+    private ClassType currentClass = ClassType.NONE;
 }
 
