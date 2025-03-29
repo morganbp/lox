@@ -1,3 +1,10 @@
-class Bagel {}
-var bagel = Bagel();
-print bagel; // Prints "Bagel instance".
+class Cat {
+  mjau() {
+    print "MJAAUUU";
+  }
+}
+var cat = Cat();
+cat.age = 10;
+print cat;
+print cat.age;
+cat.mjau();
