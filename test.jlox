@@ -1,4 +1,8 @@
 class Thing {
+  init() {
+    this.hei = "Hei på deg i utganspunktet";
+
+  }
   getCallback() {
     fun localFunction() {
       print this.hei;
@@ -8,6 +12,7 @@ class Thing {
   }
 }
 var ting = Thing();
+ting.getCallback()();
 ting.hei = "Hei på meg";
 var callback = ting.getCallback();
 callback();
