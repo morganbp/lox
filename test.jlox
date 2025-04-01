@@ -1,18 +1,13 @@
-class Thing {
-  init() {
-    this.hei = "Hei på deg i utganspunktet";
-
-  }
-  getCallback() {
-    fun localFunction() {
-      print this.hei;
-    }
-
-    return localFunction;
+class Math {
+  class square(n) {
+    return n * n;
   }
 }
-var ting = Thing();
-ting.getCallback()();
-ting.hei = "Hei på meg";
-var callback = ting.getCallback();
-callback();
+
+var math = Math();
+math.number = 223;
+print "CAN WE DO THiS?";
+print Math.square(3); // Prints "9".
+
+Math.pi = 3.141592653;
+print Math.pi;

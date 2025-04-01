@@ -189,7 +189,13 @@ public class Interpreter implements Expr.Visitor<Object>,
             LoxFunction function = new LoxFunction(method, environment, method.name.lexeme.equals("init"));
             methods.put(method.name.lexeme, function);
         }
-        LoxClass klass = new LoxClass(stmt.name.lexeme, methods);
+        Map<String, LoxFunction> staticMethods = new HashMap<>();
+        for (Stmt.Function staticMethod : stmt.staticMethods) {
+            LoxFunction function = new LoxFunction(staticMethod, environment, false);
+            staticMethods.put(staticMethod.name.lexeme, function);
+        }
+        LoxClass metaClass = new LoxClass(null, stmt.name.lexeme + " metaclass", staticMethods);
+        LoxClass klass = new LoxClass(metaClass, stmt.name.lexeme, methods);
         environment.assign(stmt.name, klass);
         return null;
     }

@@ -103,6 +103,14 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
             resolveFunction(method, declaration);
         }
         endScope();
+
+        for (Stmt.Function staticMethod : stmt.staticMethods) {
+            beginScope();
+            scopes.peek().put("this", true);
+            resolveFunction(staticMethod, FunctionType.STATIC);
+            endScope();
+        }
+
         currentClass = enclosingType;
         return null;
     }
@@ -267,7 +275,8 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         NONE,
         FUNCTION,
         INITIALIZER,
-        METHOD
+        METHOD,
+        STATIC
     }
 
     private enum ClassType {

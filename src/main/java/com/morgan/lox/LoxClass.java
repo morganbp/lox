@@ -7,8 +7,8 @@ public class LoxClass extends LoxInstance implements LoxCallable {
     final String name;
     private final Map<String, LoxFunction> methods;
 
-    LoxClass(String name, Map<String, LoxFunction> methods) {
-        super(this);
+    LoxClass(LoxClass klass, String name, Map<String, LoxFunction> methods) {
+        super(klass);
         this.name = name;
         this.methods = methods;
     }
