@@ -2,7 +2,7 @@ package com.morgan.lox;
 
 import java.util.HashMap;
 import java.util.Map;
-
+ 
 public class LoxInstance {
     private LoxClass klass;
     final Map<String, Object> fields = new HashMap<>();

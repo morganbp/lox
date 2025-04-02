@@ -17,7 +17,6 @@ public class LoxClass extends LoxInstance implements LoxCallable {
         if (methods.containsKey(name)) {
             return methods.get(name);
         }
-
         return null;
     }
 
